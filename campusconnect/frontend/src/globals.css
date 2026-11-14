@@ -1,0 +1,243 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * CampusConnect design tokens — High-Contrast Dark Obsidian.
+ * Values are RGB triplets so Tailwind can apply opacity modifiers
+ * (for example bg-amber/20) while still resolving to the same palette.
+ */
+:root {
+  color-scheme: dark;
+
+  /* Depth hierarchy */
+  --canvas: 9 9 11; /* #09090B */
+  --surface: 18 18 21; /* #121215 */
+  --graphite: 28 28 33; /* #1C1C21 */
+
+  /* Structure */
+  --line: 39 39 42; /* #27272A */
+  --line-strong: 63 63 70; /* #3F3F46 */
+
+  /* Foreground */
+  --ink: 250 250 250; /* #FAFAFA */
+  --muted: 161 161 170; /* #A1A1AA */
+  --disabled: 82 82 91; /* #52525B */
+
+  /* Accents */
+  --amber: 245 158 11; /* #F59E0B */
+  --amber-hover: 251 191 36; /* #FBBF24 */
+  --cyan: 6 182 212; /* #06B6D4 */
+
+  /* Semantic status */
+  --success: 16 185 129; /* #10B981 */
+  --danger: 244 63 94; /* #F43F5E */
+}
+
+@layer base {
+  * {
+    @apply border-line;
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply min-h-screen bg-canvas font-sans text-ink antialiased;
+    background-image:
+      radial-gradient(
+        58rem 34rem at 88% -12%,
+        rgb(var(--amber) / 0.06),
+        transparent 62%
+      ),
+      radial-gradient(
+        46rem 30rem at -8% 108%,
+        rgb(var(--cyan) / 0.05),
+        transparent 60%
+      );
+    background-attachment: fixed;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background-color: rgb(var(--amber) / 0.35);
+    color: rgb(var(--ink));
+  }
+
+  :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+    outline: 2px solid rgb(var(--amber));
+    outline-offset: 2px;
+  }
+
+  option {
+    background-color: rgb(var(--surface));
+    color: rgb(var(--ink));
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(var(--line-strong)) transparent;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: rgb(var(--line-strong));
+    border: 2px solid rgb(var(--canvas));
+    border-radius: 9999px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-xl border border-line bg-surface;
+  }
+
+  .card-hover {
+    @apply transition-[border-color,box-shadow,transform] duration-200 hover:border-line-strong hover:shadow-[0_18px_44px_-30px_rgba(0,0,0,0.95)];
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber/60 focus-visible:ring-offset-2 focus-visible:ring-offset-canvas disabled:pointer-events-none disabled:opacity-50;
+  }
+
+  .btn-primary {
+    @apply bg-amber text-canvas shadow-sm hover:bg-amber-hover active:scale-[0.98];
+  }
+
+  .btn-secondary {
+    @apply border border-line bg-graphite text-ink hover:border-line-strong hover:bg-graphite/80 active:scale-[0.98];
+  }
+
+  .btn-danger {
+    @apply border border-danger/40 bg-danger/10 text-danger hover:border-danger/60 hover:bg-danger/15 active:scale-[0.98];
+  }
+
+  .btn-ghost {
+    @apply text-muted hover:bg-graphite hover:text-ink active:scale-[0.98];
+  }
+
+  .btn-icon {
+    @apply inline-flex h-10 w-10 items-center justify-center rounded-lg border border-line bg-graphite text-muted transition-colors hover:border-line-strong hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber/60 focus-visible:ring-offset-2 focus-visible:ring-offset-canvas disabled:pointer-events-none disabled:opacity-50;
+  }
+
+  .input {
+    @apply w-full rounded-lg border border-line bg-canvas px-3.5 py-2.5 text-sm text-ink placeholder:text-disabled transition-colors hover:border-line-strong focus:border-amber focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber/50 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  select.input {
+    -webkit-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23A1A1AA' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 8 4 4 4-4'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.875rem center;
+    background-size: 1rem 1rem;
+    padding-right: 2.75rem;
+  }
+
+  .input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    filter: invert(1) opacity(0.55);
+  }
+
+  .input[type="date"]::-webkit-calendar-picker-indicator:hover {
+    filter: invert(1) opacity(0.9);
+  }
+
+  .label {
+    @apply block text-sm font-medium text-ink;
+  }
+
+  .field-error {
+    @apply text-xs font-medium text-danger;
+  }
+
+  .badge {
+    @apply inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider;
+  }
+
+  .table-wrap {
+    @apply overflow-x-auto rounded-xl border border-line bg-surface;
+  }
+
+  .data-table {
+    @apply w-full min-w-[42rem] border-collapse text-left text-sm;
+  }
+
+  .data-table thead {
+    @apply bg-graphite/50;
+  }
+
+  .data-table th {
+    @apply whitespace-nowrap border-b border-line px-5 py-3 text-xs font-semibold uppercase tracking-wider text-muted;
+  }
+
+  .data-table td {
+    @apply border-b border-line px-5 py-4 align-middle text-ink;
+  }
+
+  .data-table tbody tr {
+    @apply transition-colors hover:bg-graphite/60;
+  }
+
+  .data-table tbody tr:last-child td {
+    @apply border-b-0;
+  }
+
+  .skeleton {
+    @apply relative animate-pulse overflow-hidden rounded-lg bg-graphite;
+  }
+
+  .skeleton::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(
+      90deg,
+      transparent,
+      rgb(var(--ink) / 0.05),
+      transparent
+    );
+    transform: translateX(-100%);
+    animation: skeleton-shimmer 1.9s ease-in-out infinite;
+  }
+
+  @keyframes skeleton-shimmer {
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  .hero-panel {
+    background-image:
+      radial-gradient(
+        42rem 24rem at 108% -18%,
+        rgb(var(--amber) / 0.18),
+        transparent 62%
+      ),
+      radial-gradient(
+        34rem 20rem at -12% 120%,
+        rgb(var(--cyan) / 0.12),
+        transparent 60%
+      );
+  }
+}
